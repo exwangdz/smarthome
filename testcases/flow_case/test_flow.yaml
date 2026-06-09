@@ -1,0 +1,45 @@
+-
+  feature: 下单流程
+  story: 登录接口
+  title: 验证登录成功
+  request:   # 请求信息
+    method: POST
+    url: https://sv-reg.tx-tech.com/itrade/services/auth/user/login?language=en_US
+    params:
+      loginID: CYNTHIAC
+      passwd: kk7Ap1xrf9MrSayU5U+iwb2t2Ber8/LzyWLgiAJJsgYQvZ3JHQiOa4tzGcuUX6xNgA0TkimG1UFi6FnJJEcHDsyFR9OG+69HEHN4wZ+1Oh69lWB3qLvmSWlaNQSsZJ8PqC5g5QHWvL+EuSRbEc5va5g+4Ve0xhvlPoYyWr8Wy6E=
+      captcha: 1234
+      captchaVerification: N
+      language: en_US
+  extract:
+    token: [json,'$.token',0]
+  validate: null
+
+
+-
+  feature: 下单流程
+  story: 下单接口
+  title: 验证下单成功
+  request:
+    method: POST
+    url: https://sv-reg.tx-tech.com/itrade/services/eqt/order?language=en_US
+    params:
+      token: "${read_yaml(token)"
+      marketID: HKEX
+      instrumentID: 00001
+      BS: B
+      orderType: E
+      qty: 500
+      price: 43
+      captchaVerification: N
+  validate: null
+
+
+
+
+
+
+
+
+
+

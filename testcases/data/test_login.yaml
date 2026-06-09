@@ -1,0 +1,14 @@
+-
+  feature: 登录接口
+  story: 登录接口
+  title: 验证登录成功
+  request:   # 请求信息
+    method: POST
+    url: https://sv-reg.tx-tech.com/itrade/services/auth/user/login?language=en_US
+    params:
+      loginID: ${md5_code(CYNTHIAC)}
+      passwd:  ${md5_code(abcd1234)}
+      captcha: 1234
+      captchaVerification: N
+      language: en_US
+  validate: null

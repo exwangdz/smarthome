@@ -1,0 +1,11 @@
+# -*- coding: utf-8 -*-`
+pytest
+pytest-html
+pytest-xdist
+pytest-rerunfailures
+pytest-ordering
+pytest-assume
+pytest-timeout
+pytest-dependency
+pytest-base-url
+allure-pytest

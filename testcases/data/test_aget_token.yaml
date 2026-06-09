@@ -1,0 +1,36 @@
+
+-
+  feature: 公众号模块
+  story: 获取鉴权码接口
+  title: 验证获取鉴权码成功
+  request:
+    method: get
+    url: https://api.weixin.qq.com/cgi-bin/token
+    params:
+      grant_type: client_credential
+      appid: wx8a9de038e93f77ab
+      secret: 8326fc915928dee3165720c910effb86
+
+  extract:
+    access_token: [json, '$.access_token', 0]
+    expires_in: [json, '$.expires_in', 0]   # 注意引号
+
+  validate:
+    equals:
+      断言状态码为200: [200, status_code]
+      断言expires_in相等: [7200, expires_in]   # 注意引号和去掉空格
+    contains:
+      - [access_token, text]                # 列表的列表，每个元素是二元列表
+#  validate:
+#    equals:
+#      断言状态码为200: [200,status_code]
+#      断言expires_in=7200 : [${read_yaml(expires_in)}, expires_in]
+#    contains:
+#      断言返回结果包含access_token: -access_token, text]
+#    db_equals:
+#      断言返回结果等于sql查询的内容: ["select * from pw_user where uid=1",text]
+#    db_contains:
+#      断言返回结果中包含sql查询的内容: ["select * from pw_user where uid=1",text]
+#
+
+

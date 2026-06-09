@@ -1,0 +1,12 @@
+-
+  feature: 加密模块
+  story: md5加密
+  title: md5加密
+  request:   # 请求信息
+    method: get
+    url: https://api.weixin.qq.com/cgi-bin/token
+    params:  # 使用查询参数而不是请求体
+      grant_type: ${md5_encode(client_credential)}
+      appid: ${mds_encode(wx8a9de038e93f77ab)}
+      secret: ${mds_encode(8326fc915928dee3165720c910effb86)}
+  validate: null

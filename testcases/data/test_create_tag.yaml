@@ -1,0 +1,19 @@
+-
+  feature: 登录
+  story: 创建标签接口
+  title: 创建标签
+  request:   # 请求信息
+    method: post
+    url: https://api.weixin.qq.com/cgi-bin/tags/create
+    params:  # 使用查询参数而不是请求体
+      access_token: ${read_yaml(access_token)}
+    json:
+      tag:
+        name: "{{$timestamp}}"  # 动态生成时间戳
+  validate:
+    equals:
+      断言状态码为200: [ 200,status_code ]
+
+##    contains:
+##      断言返回结果包含access_token: [ access_token, text ]
+

@@ -1,0 +1,14 @@
+-
+  feature: 登录接口
+  story: 登录接口
+  title: 验证登录成功
+  request:   # 请求信息
+    method: POST
+    url: ${env(itrade_sv_url)}
+    params:
+      loginID: ${base64_encode(CYNTHIAC)}
+      passwd:  ${base64_encode(abcd1234)}
+      captcha: 1234
+      captchaVerification: N
+      language: en_US
+  validate: null

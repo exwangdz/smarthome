@@ -1,0 +1,48 @@
+-
+   feature: 公众号模块
+   story: 获取鉴权码接口
+   title: 验证获取鉴权码成功
+
+# 参数化数据：多组 (grant_type, appid, secret)
+   parametrize:
+    - grant_type: wx_test_12345633
+      appid: wx8a9de038e93f77ab
+      secret: 8326fc915928dee3165720c910effb86
+    - grant_type: client_credential
+      appid: wx_test_123456
+      secret: 8326fc915928dee3165720c910effb86
+    - grant_type: client_credential
+      appid: wx8a9de038e93f77ab
+      secret: wrong_secret
+    - grant_type: wx_test_12345633
+      appid: wx_test_123456
+      secret: 8326fc915928dee3165720c910effb86
+    - grant_type: client_credential
+      appid: wx_test_123456
+      secret: wrong_secret
+    - grant_type: wx_test_12345633
+      appid:  wx8a9de038e93f77ab
+      secret: 8326fc915928dee3165720c910effb86
+    - grant_type: wx_test_12345633
+      appid: wx_test_123456
+      secret: wrong_secret
+
+
+   request:
+    method: get
+    url: https://api.weixin.qq.com/cgi-bin/token
+    params:
+      grant_type: $grant_type      # 引用参数化变量
+      appid: $appid
+      secret: $secret
+
+   extract:
+     access_token: [json, '$.access_token']
+     expires_in: [json, '$.expires_in']
+
+   validate:
+     equals:
+       断言状态码为200: [ 200,status_code ]
+       断言错误码相等: [40013, errcode]
+
+

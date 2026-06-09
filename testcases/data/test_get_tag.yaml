@@ -1,0 +1,16 @@
+-
+  feature: 登录
+  story: 获取鉴权码接口
+  title: 获取鉴权码成功
+  request:   # 请求信息
+    method: get
+    url: https://api.weixin.qq.com/cgi-bin/tags/get
+    params:  # 使用查询参数而不是请求体
+      access_token: ${read_yaml(access_token)}
+      userid: zhangsan
+
+  validate:
+    equals:
+      断言状态码为200: [ 200,status_code ]
+    contains:
+      断言返回结果包含id: [ id, text ]
