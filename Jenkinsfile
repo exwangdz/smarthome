@@ -1,10 +1,10 @@
 pipeline {
     agent any
-
     stages {
         stage('拉取代码') {
             steps {
-                checkout scm
+                withEnv(['http_proxy=', 'https_proxy=', 'HTTP_PROXY=', 'HTTPS_PROXY=']) {
+                    checkout scm
             }
         }
 
