@@ -12,7 +12,6 @@ pipeline {
             steps {
                 bat '''
                     cd %WORKSPACE%
-                    pip install -r requirements.txt --quiet
                 '''
             }
         }
