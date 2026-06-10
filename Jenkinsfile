@@ -1,6 +1,10 @@
 pipeline {
     agent any
 
+    options {
+        timeout(time: 15, unit: 'MINUTES')
+    }
+
     stages {
         stage('拉取代码') {
             steps {
@@ -19,9 +23,19 @@ pipeline {
             }
         }
 
-        stage('生成 Allure 报告') {
+        stage('生成 Allure HTML 报告') {
             steps {
-                allure tool: 'allure', results: [[path: 'allure-results']]
+                bat '''
+                    if exist allure-report rmdir /s /q allure-report
+                    allure generate allure-results --clean -o allure-report
+                '''
+                publishHTML([
+                    reportDir: 'allure-report',
+                    reportFiles: 'index.html',
+                    reportName: 'Allure Report',
+                    keepAll: true,
+                    alwaysLinkToLastBuild: true
+                ])
             }
         }
     }
@@ -31,7 +45,7 @@ pipeline {
             junit 'test-results.xml'
         }
         success {
-            echo 'Allure 报告已生成，请查看左侧菜单'
+            echo 'Allure 报告已生成，请点击左侧 "Allure Report" 链接查看'
         }
     }
 }
