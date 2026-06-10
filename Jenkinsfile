@@ -1,4 +1,3 @@
-
 pipeline {
     agent any
 
@@ -9,13 +8,11 @@ pipeline {
             }
         }
 
-        stage('安装Python依赖') {
+        stage('安装依赖') {
             steps {
-                // 使用bat脚本（Windows环境）
                 bat '''
                     cd %WORKSPACE%
-                    python -m pip install --upgrade pip
-                    pip install -r requirements.txt
+                    pip install -r requirements.txt --quiet
                 '''
             }
         }
@@ -24,15 +21,16 @@ pipeline {
             steps {
                 bat '''
                     cd %WORKSPACE%
-                    python -m pytest tests/ --junitxml=test-reports/junit.xml --html=test-reports/report.html --self-contained-html
+                    if not exist "test-reports" mkdir test-reports
+                    pytest testcases/ --junitxml=test-reports/junit.xml --html=test-reports/report.html --self-contained-html
                 '''
             }
             post {
                 always {
-                    // 收集JUnit格式的测试报告
+                    // 解析 JUnit 格式的测试报告，在 Jenkins 界面展示测试趋势
                     junit 'test-reports/junit.xml'
-                    
-                    // 如果需要发布HTML报告（需安装HTML Publisher插件）
+
+                    // 发布 HTML 报告（需要安装 HTML Publisher Plugin）
                     publishHTML([
                         reportDir: 'test-reports',
                         reportFiles: 'report.html',
@@ -45,7 +43,7 @@ pipeline {
 
     post {
         always {
-            // 清理工作空间（可选）
+            // 可选：清理工作空间，节省磁盘空间
             cleanWs()
         }
     }
