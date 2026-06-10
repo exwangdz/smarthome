@@ -8,14 +8,6 @@ pipeline {
             }
         }
 
-        stage('安装依赖') {
-            steps {
-                bat '''
-                    cd %WORKSPACE%
-                '''
-            }
-        }
-
         stage('执行测试用例') {
             steps {
                 bat '''
@@ -26,10 +18,7 @@ pipeline {
             }
             post {
                 always {
-                    // 解析 JUnit 格式的测试报告，在 Jenkins 界面展示测试趋势
                     junit 'test-reports/junit.xml'
-
-                    // 发布 HTML 报告（需要安装 HTML Publisher Plugin）
                     publishHTML([
                         reportDir: 'test-reports',
                         reportFiles: 'report.html',
@@ -42,7 +31,6 @@ pipeline {
 
     post {
         always {
-            // 可选：清理工作空间，节省磁盘空间
             cleanWs()
         }
     }
