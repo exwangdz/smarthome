@@ -11,36 +11,34 @@
 import copy
 import pymysql
 
-from configs import setting
-
 
 class AssertUtil:
     #链接数据库
-    def conn_database(self):
-        self.conn=pymysql.connect(
-            user=setting.db_username,
-            password=setting.db_password,
-            host=setting.db_host,
-            port=setting.db_port,
-            database=setting.db_database
-        )
-        return self.conn
-
-    #执行SQL语句
-    def execute_sql(self,sql):
-        #创建链接
-        conn=self.conn_database()
-        #创建游标
-        cursor=conn.cursor()
-        #执行SQL语句
-        cursor.execute(sql)
-        #获取结果
-        result=cursor.fetchone()
-        #关闭游标
-        cursor.close()
-        #关闭链接
-        conn.close()
-        return result
+    # def conn_database(self):
+    #     self.conn=pymysql.connect(
+    #         user=setting.db_username,
+    #         password=setting.db_password,
+    #         host=setting.db_host,
+    #         port=setting.db_port,
+    #         database=setting.db_database
+    #     )
+    #     return self.conn
+    #
+    # #执行SQL语句
+    # def execute_sql(self,sql):
+    #     #创建链接
+    #     conn=self.conn_database()
+    #     #创建游标
+    #     cursor=conn.cursor()
+    #     #执行SQL语句
+    #     cursor.execute(sql)
+    #     #获取结果
+    #     result=cursor.fetchone()
+    #     #关闭游标
+    #     cursor.close()
+    #     #关闭链接
+    #     conn.close()
+    #     return result
 
     def assert_all_case(self, res, assert_type, value):
         # 深拷贝一个res
