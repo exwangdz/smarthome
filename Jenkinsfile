@@ -34,7 +34,8 @@ pipeline {
                     reportFiles: 'index.html',
                     reportName: 'Allure Report',
                     keepAll: true,
-                    alwaysLinkToLastBuild: true
+                    alwaysLinkToLastBuild: true,
+                    allowMissing: true       // 必须参数：报告文件不存在时不导致构建失败
                 ])
             }
         }
