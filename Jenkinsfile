@@ -14,7 +14,10 @@ pipeline {
                         pip install allure-pytest
                         $env:PYTHONPATH = "$env:WORKSPACE"
                         Remove-Item -Recurse -Force allure-results -ErrorAction SilentlyContinue
-                        pytest --alluredir=allure-results --clean-alluredir   // 去掉 --maxfail=1
+                        # 调试：列出测试文件
+                        Write-Host "=== Test files in testcases ==="
+                        Get-ChildItem -Path ./testcases -Recurse -Filter "*.py" | Select-Object FullName
+                        pytest --alluredir=allure-results --clean-alluredir --maxfail=1
                     ''')
                 }
             }
@@ -23,20 +26,28 @@ pipeline {
     post {
         always {
             script {
-                // 无论测试成功或失败都尝试生成报告
-                bat '''
-                    if exist allure-report rmdir /s /q allure-report
-                    allure generate allure-results --clean -o allure-report
-                '''
-                publishHTML([
-                    reportDir: 'allure-report',
-                    reportFiles: 'index.html',
-                    reportName: 'Allure Report',
-                    keepAll: true,
-                    alwaysLinkToLastBuild: true,
-                    allowMissing: true
-                ])
-                // junit 如果没有文件可加入条件判断
+                if (fileExists('allure-results')) {
+                    dir('allure-results') {
+                        def files = findFiles(glob: '*.json')
+                        if (files.size() > 0) {
+                            bat 'if exist allure-report rmdir /s /q allure-report'
+                            def allureHome = tool name: 'allure', type: 'hudson.plugins.allure.AllureInstallation'
+                            bat "${allureHome}\\bin\\allure generate allure-results --clean -o allure-report"
+                            publishHTML([
+                                reportDir: 'allure-report',
+                                reportFiles: 'index.html',
+                                reportName: 'Allure Report',
+                                keepAll: true,
+                                alwaysLinkToLastBuild: true,
+                                allowMissing: true
+                            ])
+                        } else {
+                            echo "No JSON files in allure-results, skipping report."
+                        }
+                    }
+                } else {
+                    echo "allure-results directory does not exist."
+                }
                 junit allowEmptyResults: true, testResults: 'test-results.xml'
             }
         }
