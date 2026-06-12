@@ -21,7 +21,10 @@ pipeline {
                     // 3. 禁用 Python 写入字节码（可选）
                     withEnv(['PYTHONDONTWRITEBYTECODE=1']) {
                         // 4. 执行 pytest（只针对当前项目目录）
-                        bat 'python -m pytest -v'
+                          bat 'where pytest'
+                          bat 'python -c "import pytest; print(pytest.__version__)"'
+                          bat 'dir'
+                          bat 'pytest --collect-only'
                     }
                 }
             }
