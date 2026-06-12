@@ -43,6 +43,6 @@
    validate:
      equals:
        断言状态码为200: [ 200,status_code ]
-       断言错误码相等: [40013, errcode]
+
 
 

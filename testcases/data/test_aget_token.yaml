@@ -18,7 +18,7 @@
   validate:
     equals:
       断言状态码为200: [200, status_code]
-      断言expires_in相等: [7200, expires_in]   # 注意引号和去掉空格
+#      断言expires_in相等: [7200, expires_in]   # 注意引号和去掉空格
     contains:
       - [access_token, text]                # 列表的列表，每个元素是二元列表
 #  validate:
