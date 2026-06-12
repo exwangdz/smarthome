@@ -7,5 +7,10 @@ pipeline {
                 checkout scm
             }
         }
+        stage('执行测试') {
+            steps {
+                bat 'pytest'
+            }
+        }
     }
 }
